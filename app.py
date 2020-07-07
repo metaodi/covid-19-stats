@@ -13,8 +13,6 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
 st.title('Weekdays of commit and when to expect the next commit')
-st.markdown('# Weekdays of commits and when to expect next commit')
-
 
 # to use different styles, make sure to reload the default to always get clean results
 # plt.style.available
