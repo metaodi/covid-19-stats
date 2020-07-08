@@ -58,16 +58,21 @@ cantons = [
     "VS",
     "ZG",
     "ZH",
+    "FL",
 ]
 
-selected_canton = st.sidebar.selectbox(
+selected_canton = st.selectbox(
     'Select a canton',
     cantons
 )
 
 @st.cache
 def load_data(canton, start_date):
-    commits = list(repo.iter_commits(paths=f'fallzahlen_kanton_total_csv_v2/COVID19_Fallzahlen_Kanton_{canton}_total.csv', since=start_date.date().isoformat()))
+    if canton == 'FL':
+        canton_path = canton
+    else:
+        canton_path = f'Kanton_{canton}'
+    commits = list(repo.iter_commits(paths=f'fallzahlen_kanton_total_csv_v2/COVID19_Fallzahlen_{canton_path}_total.csv', since=start_date.date().isoformat()))
 
     data = []
     for commit in commits:
@@ -120,7 +125,7 @@ next_commit_date = df_canton[['date']].to_dict('records')[-1]['date'] + mean_tim
 
 diff = next_commit_date - now
 if diff.total_seconds() < -(60*60*24):
-    ax.text(0.05, 1.05, f"The next commit is overdue since {abs(diff.days)} days, was expected on {next_commit_date.date()}", transform=ax.transAxes, bbox=dict(facecolor='red', alpha=0.5), fontsize=32)
+    ax.text(0.05, 1.05, f"Commit was expected on {next_commit_date.date()} ({abs(diff.days)} days overdue)", transform=ax.transAxes, bbox=dict(facecolor='red', alpha=0.5), fontsize=32)
 else:
     ax.text(0.05, 1.05, f"Next commit expected on {next_commit_date.date()} (in {diff.days + 1} days)", transform=ax.transAxes, bbox=dict(facecolor='blue', alpha=0.5), fontsize=32)
     
