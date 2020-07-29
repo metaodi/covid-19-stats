@@ -80,7 +80,7 @@ def load_data(canton, start_date):
             committer = 'Scraper'
         else:
             committer = 'Other'
-        date = commit.committed_datetime.replace(tzinfo=None).date()
+        date = commit.committed_datetime.replace(tzinfo=None)
         data.append({'canton': canton, 'date': date, 'committer': committer})
     df = pd.DataFrame(data)
     df['date'] = pd.to_datetime(df['date'])
